@@ -26,8 +26,14 @@ canvas{position:fixed;inset:0;width:100%;height:100%}
 <div id="gb"></div><div id="feed"></div>
 <div id="count" class="ov"></div>
 <div id="res" class="ov"></div>
-<script src="/socket.io/socket.io.js"></script>
+
+<!-- مكتبة Socket.io -->
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
 <script>
+// ⚠️ هنا نضع رابط سيرفر Termux الخاص بك. 
+// بما أنك ستفتح اللعبة على نفس الهاتف، سنستخدم localhost.
+const socket = io("http://localhost:8080");
+
 const C=[
 ['🇸🇦','السعودية',['سعود','ksa','saudi','sa'], 'https://i.imgur.com/eA27Qxd.png'],
 ['🇪🇬','مصر',['مصر','egypt','masr'], 'https://i.imgur.com/tyqeiaS.png'],
@@ -382,7 +388,7 @@ function onEv(e){
  }else if(e.type=='follow')feed('➕ '+e.user+' تابع');
 }
 
-if(typeof io!='undefined'){try{io().on('ev',onEv);}catch(e){}}
+socket.on('ev', onEv);
 
 function frame(ts){
  const dt=Math.min(.05,(ts-last)/1000||0);last=ts;
